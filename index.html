@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>strowkeco — приложения для Windows</title>
+<link rel="stylesheet" href="/style.css">
+</head><body>
+<header><b class="logo">strowke<span>co</span></b><nav><a href="#apps">Приложения</a><a href="#help">Как запустить</a></nav></header>
+<section class="hero">
+  <h1>Небольшие программы, которые просто запускаются.</h1>
+  <p>Скачайте .exe, откройте двойным кликом. Установка не нужна.</p>
+  <div class="snake" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i class="head"></i><i class="food"></i></div>
+</section>
+<main id="apps">
+{% for a in apps %}
+  <article class="app">
+    <div class="ico">{{ a.title[0] }}</div>
+    <div class="info"><h2>{{ a.title }}</h2><small>{{ a.by }}</small><p>{{ a.desc }}</p></div>
+    {% if a.ready %}<a class="btn" href="{{ url_for('download', name=a.file) }}">Скачать {{ a.file }} · {{ a.size }}</a>
+    {% else %}<span class="btn off">Скоро</span>{% endif %}
+  </article>
+{% endfor %}
+</main>
+<section id="help"><h2>Как запустить</h2>
+<p>Если Windows показывает «Защитник Windows предотвратил запуск», нажмите «Подробнее» → «Выполнить в любом случае». Так бывает с программами без цифровой подписи.</p></section>
+<footer>© strowkeco · Strowke Studio</footer>
+</body></html>
