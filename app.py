@@ -1,7 +1,8 @@
-from flask import Flask, render_template, send_from_directory, abort
+from flask import Flask, render_template, send_from_directory, redirect, abort
 import os
 BASE = os.path.dirname(os.path.abspath(__file__))
 app = Flask(__name__, template_folder=BASE)
+REL = "https://github.com/TkachenkoAlex66/Strowkeco/releases/latest/download/"
 
 APPS = [
  {"id": "engine", "file": "StrowkeEngine.exe", "title": "Create game on Strowke Engine",
@@ -17,9 +18,8 @@ APPS = [
 @app.route("/")
 def index():
     for a in APPS:
-        p = os.path.join(BASE, a["file"])
-        a["ready"] = os.path.exists(p)
-        a["size"] = f"{os.path.getsize(p)/1048576:.1f} МБ" if a["ready"] else ""
+        a["ready"] = True
+        a["size"] = ""
     return render_template("index.html", apps=APPS)
 
 @app.route("/style.css")
@@ -28,9 +28,9 @@ def css():
 
 @app.route("/download/<name>")
 def download(name):
-    if name not in {a["file"] for a in APPS} or not os.path.exists(os.path.join(BASE, name)):
+    if name not in {a["file"] for a in APPS}:
         abort(404)
-    return send_from_directory(BASE, name, as_attachment=True)
+    return redirect(REL + name)
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)
